@@ -27,6 +27,7 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     Font titleFont;
     Font titleFont1;
     Timer frameDraw;
+    Character c = new Character (250, 500, 50, 50);
     
     public Game_Panel() {
     	titleFont = new Font("Arial", Font.PLAIN, 96);
@@ -60,6 +61,7 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     public void drawGameState(Graphics g) {  
     	g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
+		c.draw(g);
     }
     public void drawEndState(Graphics g)  {  
     	g.setColor(Color.RED);
@@ -107,6 +109,9 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 		}
 		if (e.getKeyCode()==KeyEvent.VK_W) {
 			if (currentState == GAME) {
+				if (c.isJumping == false) {
+					c.move();
+				}
 			    System.out.println("UP");
 			}
 		}
@@ -114,16 +119,18 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 		else if (e.getKeyCode()==KeyEvent.VK_A) {
 			if (currentState == GAME) {
 				System.out.println("LEFT");
+				c.left();
 			}
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_D) {
 			if (currentState == GAME) {
+				c.right();
 				System.out.println("RIGHT");
 			}
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
 			if (currentState == GAME) {
-				System.out.println("SHIELD/BLOCK");
+				System.out.println("DASH/BLOCK");
 			}
 		}
 	}
