@@ -40,7 +40,7 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     	
     }
     public void updateGameState() {  
-    	
+    	c.move();
     }
     public void updateEndState()  {  
     	
@@ -107,38 +107,50 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 		        currentState++;
 		    }
 		}
-		if (e.getKeyCode()==KeyEvent.VK_W) {
+		if (e.getKeyCode()==KeyEvent.VK_W && c.isGrounded) {
 			if (currentState == GAME) {
-				if (c.isJumping == false) {
-					c.move();
-				}
+				c.isJumping = true;
+				c.isGrounded = false;
 			    System.out.println("UP");
 			}
 		}
 		//Ask about jumping mechanism (up and down).
 		else if (e.getKeyCode()==KeyEvent.VK_A) {
 			if (currentState == GAME) {
+				c.isLeft = true;
 				System.out.println("LEFT");
-				c.left();
 			}
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_D) {
 			if (currentState == GAME) {
-				c.right();
-				System.out.println("RIGHT");
+				c.isRight = true;
+				System.out.println("RIGHT"); 
+				
+				}
 			}
-		}
 		else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
 			if (currentState == GAME) {
-				System.out.println("DASH/BLOCK");
+				c.isDashingReady = true;
+				System.out.println("DASH");
+				
 			}
 		}
-	}
+		}
+		
 	
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getKeyCode()==KeyEvent.VK_A) {
+			c.isLeft = false;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_D) {
+			c.isRight = false;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+			c.isDashingReady = false;
+		}
 		
 	}
 
