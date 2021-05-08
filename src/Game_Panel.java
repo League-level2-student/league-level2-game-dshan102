@@ -27,8 +27,8 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     Font titleFont;
     Font titleFont1;
     Timer frameDraw;
-    Character c = new Character (250, 500, 50, 50);
-    
+    Character c = new Character (590, 500, 60, 60);
+    Object_Manager OM = new Object_Manager(c);
     public Game_Panel() {
     	titleFont = new Font("Arial", Font.PLAIN, 96);
     	titleFont1 = new Font("Arial", Font.PLAIN, 54);
@@ -40,6 +40,7 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     	
     }
     public void updateGameState() {  
+    	OM.update();
     	c.move();
     }
     public void updateEndState()  {  
@@ -61,7 +62,7 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     public void drawGameState(Graphics g) {  
     	g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
-		c.draw(g);
+		OM.draw(g);
     }
     public void drawEndState(Graphics g)  {  
     	g.setColor(Color.RED);
