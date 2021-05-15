@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -27,13 +29,24 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     Font titleFont;
     Font titleFont1;
     Timer frameDraw;
-    Character c = new Character (590, 500, 60, 60);
+    Timer fireballSpawn;
+    Timer tokenSpawn;
+    Character c = new Character (590, 475, 60, 60);
     Object_Manager OM = new Object_Manager(c);
+    Object_Manager1 OM1 = new Object_Manager1(c);
+    public static BufferedImage image;
+    public static boolean needImage = true;
+    public static boolean gotImage = false;	
     public Game_Panel() {
     	titleFont = new Font("Arial", Font.PLAIN, 96);
     	titleFont1 = new Font("Arial", Font.PLAIN, 54);
         frameDraw = new Timer(1000/60,this);
         frameDraw.start();
+        fireballSpawn = new Timer(3000, OM);
+        tokenSpawn = new Timer(5000, OM1);
+        if (needImage) {
+            loadImage ("background.jpg");
+        }
     }
     
     public void updateMenuState() {  
@@ -41,6 +54,7 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     }
     public void updateGameState() {  
     	OM.update();
+    	OM1.update();
     	c.move();
     }
     public void updateEndState()  {  
@@ -60,8 +74,12 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     	g.drawString("Press SPACE for instructions", 300, 500);
     }
     public void drawGameState(Graphics g) {  
-    	g.setColor(Color.BLACK);
-		g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
+    	if (gotImage) {
+    		g.drawImage(image, 0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT, null);
+    	} else {
+    		g.setColor(Color.BLACK);
+    		g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
+    	}
 		OM.draw(g);
     }
     public void drawEndState(Graphics g)  {  
@@ -103,9 +121,22 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
 		        currentState = MENU;
+		        c = new Character (590, 475, 60, 60);
+		        OM = new Object_Manager(c);
+		        OM1 = new Object_Manager1(c);
+		        fireballSpawn = new Timer(3000, OM);
+		        tokenSpawn = new Timer(5000, OM1);
 		    } 
 		    else {
 		        currentState++;
+		    }
+		    if(currentState == GAME) {
+		    	fireballSpawn.start();
+		    	tokenSpawn.start();
+		    }
+		    if(currentState == END) {
+		    	fireballSpawn.stop();
+		    	tokenSpawn.stop();
 		    }
 		}
 		if (e.getKeyCode()==KeyEvent.VK_W && c.isGrounded) {
@@ -153,6 +184,17 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 			c.isDashingReady = false;
 		}
 		
+	}
+	void loadImage(String imageFile) {
+	    if (needImage) {
+	        try {
+	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		    gotImage = true;
+	        } catch (Exception e) {
+	            
+	        }
+	        needImage = false;
+	    }
 	}
 
 	}
