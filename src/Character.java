@@ -36,6 +36,7 @@ public class Character extends Game_Object {
 	
 	
     public void move() {
+    	super.update();
     if (isRight) {
     	x+=speed;
     }

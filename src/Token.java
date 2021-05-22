@@ -18,6 +18,7 @@ public Token (int x, int y, int width, int height) {
 
 public void update() {
 	y+=speed;
+	super.update();
 }
 
 public void draw(Graphics g) {

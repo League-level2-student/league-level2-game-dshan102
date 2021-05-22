@@ -4,42 +4,93 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.Timer;
+
 public class Object_Manager implements ActionListener{
 Character c;
 ArrayList <Fireball> fb = new ArrayList <Fireball>();
+ArrayList <Token> to = new ArrayList <Token>();
 Random rand = new Random();
-
+Timer fireballSpawn;
+Timer tokenSpawn;
+int score = 0;
 public Object_Manager (Character c) {
 	this.c = c;
+	 fireballSpawn = new Timer(3000, this);
+	 fireballSpawn.start();
+	 tokenSpawn = new Timer(5000, this);
+	 tokenSpawn.start();
 }
 public void addFireball() {
 	fb.add(new Fireball(rand.nextInt(Game_Runner.WIDTH),0,60,60));
 }
+public void addToken() {
+	to.add(new Token(rand.nextInt(Game_Runner.WIDTH),0,60,60));
+}
 public void update() {
 	for(int i=0; i<fb.size(); i++) {
 		fb.get(i).update();
-	if(fb.get(i).y<=475) {
+	if(fb.get(i).y>=475) {
 		fb.get(i).isActive = false;
 		}
 	}
+	for(int i=0; i<to.size();i++) {
+		to.get(i).update();
+	if(to.get(i).y>=475) {
+		to.get(i).isActive = false;
+		}
+	}
+	checkCollision();
+	purgeObjects();
 }
 public void draw(Graphics g) {
 	c.draw(g);
 	for(int i=0; i<fb.size(); i++) {
 		fb.get(i).draw(g);
 }
+	for(int i=0; i<to.size(); i++) {
+		to.get(i).draw(g);
+	}
 }
 public void purgeObjects() {
 	for (int i=0; i<fb.size(); i++) {
 		if (fb.get(i).isActive == false) {
 			fb.remove(i);
 		}
+		for (int i1=0; i1<to.size(); i1++) {
+			if (to.get(i1).isActive == false) {
+				to.remove(i1);
+			}
+		}
 	}
+}
+public void checkCollision() {
+	for (int i=0; i<fb.size(); i++) {
+		if (fb.get(i).collisionBox.intersects(c.collisionBox)) {
+			fb.get(i).isActive = false;
+			c.isActive = false;
+		}
+	}
+	for (int j=0; j<to.size(); j++) {
+		if (to.get(j).collisionBox.intersects(c.collisionBox)) {
+			to.get(j).isActive = false;
+			score+=1;
+			//ask about invincibility when dashing and other features to add
+		}
+	}
+}
+public int getScore() {
+	return score;
 }
 @Override
 public void actionPerformed(ActionEvent e) {
 	// TODO Auto-generated method stub
-		addFireball();
+		if (e.getSource()==fireballSpawn) {
+			addFireball();
+		}
+		else if (e.getSource()==tokenSpawn) {
+			addToken();
+		}
 }
 }
 
