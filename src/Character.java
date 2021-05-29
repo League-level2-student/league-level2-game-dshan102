@@ -45,12 +45,12 @@ public class Character extends Game_Object {
     }
     if (isDashingReady && isRight) {
     	isRight = false;
-    	x+=5*speed;
+    	//x+=8*speed;
     	isDashingReady = false;
     }
     if (isDashingReady && isLeft) {
     	isLeft = false;
-    	x-=5*speed;
+    	//x-=8*speed;
     	isDashingReady = false;
     }
      if (isJumping) {

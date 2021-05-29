@@ -78,19 +78,22 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     		g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
     	}
 		OM.draw(g);
+		g.setColor(Color.BLACK);
+		g.setFont(titleFont1);
+	    g.drawString("Score: " + OM.getScore() + "", 0, 50);
     }
     public void drawEndState(Graphics g)  {  
     	g.setColor(Color.RED);
     	g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
     	g.setFont(titleFont);
     	g.setColor(Color.YELLOW);
-    	g.drawString("GAME OVER", 60, 100);
+    	g.drawString("GAME OVER", 350, 100);
     	g.setFont(titleFont1);
     	g.setColor(Color.YELLOW);
-    	//g.drawString("You killed " + OM.getScore() + " enemie(s)", 120, 300);
+    	g.drawString("Your score was " + OM.getScore(), 420, 225);
     	g.setFont(titleFont1);
     	g.setColor(Color.YELLOW);
-    	g.drawString("Press ENTER to restart", 110, 425);
+    	g.drawString("Press ENTER to restart", 360, 350);
     }
 
     @Override
@@ -146,9 +149,11 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 				
 				}
 			}
-		else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+		else if (e.getKeyCode()==KeyEvent.VK_SPACE && !c.isDashingReady) {
 			if (currentState == GAME) {
 				c.isDashingReady = true;
+				OM.isDashing.start();
+				c.speed = 150;
 				System.out.println("DASH");
 				
 			}
@@ -165,9 +170,6 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_D) {
 			c.isRight = false;
-		}
-		else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-			c.isDashingReady = false;
 		}
 		
 	}

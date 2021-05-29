@@ -13,13 +13,15 @@ ArrayList <Token> to = new ArrayList <Token>();
 Random rand = new Random();
 Timer fireballSpawn;
 Timer tokenSpawn;
+Timer isDashing;
 int score = 0;
 public Object_Manager (Character c) {
 	this.c = c;
-	 fireballSpawn = new Timer(3000, this);
+	 fireballSpawn = new Timer(2000, this);
 	 fireballSpawn.start();
 	 tokenSpawn = new Timer(5000, this);
 	 tokenSpawn.start();
+	 isDashing = new Timer(275, this);
 }
 public void addFireball() {
 	fb.add(new Fireball(rand.nextInt(Game_Runner.WIDTH),0,60,60));
@@ -66,16 +68,17 @@ public void purgeObjects() {
 }
 public void checkCollision() {
 	for (int i=0; i<fb.size(); i++) {
-		if (fb.get(i).collisionBox.intersects(c.collisionBox)) {
-			fb.get(i).isActive = false;
-			c.isActive = false;
+		if (fb.get(i).collisionBox.intersects(c.collisionBox) && !c.isDashingReady) {
+				fb.get(i).isActive = false;
+				fb.get(i).isActive = false;
+				c.isActive = false;
 		}
 	}
 	for (int j=0; j<to.size(); j++) {
 		if (to.get(j).collisionBox.intersects(c.collisionBox)) {
 			to.get(j).isActive = false;
 			score+=1;
-			//ask about invincibility when dashing and other features to add
+			//ask about invincibility when dashing
 		}
 	}
 }
@@ -90,6 +93,11 @@ public void actionPerformed(ActionEvent e) {
 		}
 		else if (e.getSource()==tokenSpawn) {
 			addToken();
+		}
+		else if (e.getSource()==isDashing) {
+			c.isDashingReady = false;
+			isDashing.stop();
+			c.speed = 10;
 		}
 }
 }
