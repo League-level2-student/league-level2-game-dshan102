@@ -28,20 +28,20 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     int currentState = MENU;
     Font titleFont;
     Font titleFont1;
+    Font titleFont2;
     Timer frameDraw;
     Character c = new Character (590, 475, 60, 60);
     Object_Manager OM = new Object_Manager(c);
     public static BufferedImage image;
-    public static boolean needImage = true;
-    public static boolean gotImage = false;	
+    public static BufferedImage life;
     public Game_Panel() {
     	titleFont = new Font("Arial", Font.PLAIN, 96);
     	titleFont1 = new Font("Arial", Font.PLAIN, 54);
+    	titleFont2 = new Font("Arial", Font.PLAIN, 48);
         frameDraw = new Timer(1000/60,this);
         frameDraw.start();
-        if (needImage) {
-            loadImage ("background.jpg");
-        }
+        image = loadImage ("background.jpg");
+        life = loadImage ("Life.png");
     }
     
     public void updateMenuState() {  
@@ -62,25 +62,25 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     	g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
     	g.setFont(titleFont);
     	g.setColor(Color.YELLOW);
-    	g.drawString("Game Name", 330, 100);
+    	g.drawString("Frog vs. Fireball", 300, 150);
     	g.setFont(titleFont1);
     	g.setColor(Color.YELLOW);
-    	g.drawString("Press ENTER to start", 360, 300);
-    	g.setFont(titleFont1);
+    	g.drawString("Press ENTER to start", 375, 300);
+    	g.setFont(titleFont2);
     	g.setColor(Color.YELLOW);
-    	g.drawString("Press SPACE for instructions", 300, 500);
+    	g.drawString("Hold W and S to move", 390, 425);
+    	g.drawString ("Press Space while moving to dash", 300, 550);
     }
     public void drawGameState(Graphics g) {  
-    	if (gotImage) {
-    		g.drawImage(image, 0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT, null);
-    	} else {
-    		g.setColor(Color.BLACK);
-    		g.fillRect(0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT);
-    	}
+    	g.drawImage(image, 0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT, null);
 		OM.draw(g);
 		g.setColor(Color.BLACK);
 		g.setFont(titleFont1);
 	    g.drawString("Score: " + OM.getScore() + "", 0, 50);
+	    g.drawString("Lives: ", 0, 100);
+	    for (int i=0; i<OM.getLives(); i++) {
+	    	g.drawImage(life, 140+i*50, 65, 50, 50, null);
+	    }
     }
     public void drawEndState(Graphics g)  {  
     	g.setColor(Color.RED);
@@ -132,21 +132,17 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 			if (currentState == GAME) {
 				c.isJumping = true;
 				c.isGrounded = false;
-			    System.out.println("UP");
 			}
 		}
 		//Ask about jumping mechanism (up and down).
 		else if (e.getKeyCode()==KeyEvent.VK_A) {
 			if (currentState == GAME) {
 				c.isLeft = true;
-				System.out.println("LEFT");
 			}
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_D) {
 			if (currentState == GAME) {
-				c.isRight = true;
-				System.out.println("RIGHT"); 
-				
+				c.isRight = true;		
 				}
 			}
 		else if (e.getKeyCode()==KeyEvent.VK_SPACE && !c.isDashingReady) {
@@ -154,7 +150,6 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 				c.isDashingReady = true;
 				OM.isDashing.start();
 				c.speed = 150;
-				System.out.println("DASH");
 				
 			}
 		}
@@ -173,16 +168,12 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
 		}
 		
 	}
-	void loadImage(String imageFile) {
-	    if (needImage) {
+	BufferedImage loadImage(String imageFile) {
 	        try {
-	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-		    gotImage = true;
+	            return ImageIO.read(this.getClass().getResourceAsStream(imageFile));
 	        } catch (Exception e) {
 	            
-	        }
-	        needImage = false;
-	    }
+	        }   return null;
 	}
 
 	}

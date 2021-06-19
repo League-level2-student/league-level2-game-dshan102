@@ -1,9 +1,11 @@
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 public class Object_Manager implements ActionListener{
@@ -15,6 +17,7 @@ Timer fireballSpawn;
 Timer tokenSpawn;
 Timer isDashing;
 int score = 0;
+int lives = 3;
 public Object_Manager (Character c) {
 	this.c = c;
 	 fireballSpawn = new Timer(2000, this);
@@ -70,17 +73,22 @@ public void checkCollision() {
 	for (int i=0; i<fb.size(); i++) {
 		if (fb.get(i).collisionBox.intersects(c.collisionBox) && !c.isDashingReady) {
 				fb.get(i).isActive = false;
-				fb.get(i).isActive = false;
-				c.isActive = false;
+				lives-=1;
+				if(lives == 0) {
+					c.isActive = false;
+				}
 		}
 	}
 	for (int j=0; j<to.size(); j++) {
 		if (to.get(j).collisionBox.intersects(c.collisionBox)) {
 			to.get(j).isActive = false;
 			score+=1;
-			//ask about invincibility when dashing
 		}
 	}
+}
+public int getLives() {
+	return lives;
+	
 }
 public int getScore() {
 	return score;
@@ -100,5 +108,6 @@ public void actionPerformed(ActionEvent e) {
 			c.speed = 10;
 		}
 }
+
 }
 
