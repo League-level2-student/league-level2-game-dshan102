@@ -53,6 +53,8 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     	}
     	OM.update();
        	c.move();
+       	OM.fireballSpawn.start();
+       	OM.tokenSpawn.start();
     }
     public void updateEndState()  {  
     	

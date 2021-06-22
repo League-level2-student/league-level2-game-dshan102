@@ -21,9 +21,9 @@ int lives = 3;
 public Object_Manager (Character c) {
 	this.c = c;
 	 fireballSpawn = new Timer(1000, this);
-	 fireballSpawn.start();
+	 //fireballSpawn.start();
 	 tokenSpawn = new Timer(5000, this);
-	 tokenSpawn.start();
+	 //tokenSpawn.start();
 	 isDashing = new Timer(275, this);
 }
 public void addFireball() {
