@@ -68,8 +68,10 @@ public class Game_Panel extends JPanel implements ActionListener, KeyListener{
     	g.drawString("Press ENTER to start", 375, 300);
     	g.setFont(titleFont2);
     	g.setColor(Color.YELLOW);
-    	g.drawString("Hold W and S to move", 390, 425);
-    	g.drawString ("Press Space while moving to dash", 300, 550);
+    	g.drawString("Hold A and D to move", 390, 400);
+    	g.drawString ("Press Space while moving to dash", 280, 500);
+    	g.drawString ("Collect tokens to score points", 340, 600);
+
     }
     public void drawGameState(Graphics g) {  
     	g.drawImage(image, 0, 0, Game_Runner.WIDTH, Game_Runner.HEIGHT, null);

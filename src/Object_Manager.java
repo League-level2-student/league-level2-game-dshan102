@@ -20,7 +20,7 @@ int score = 0;
 int lives = 3;
 public Object_Manager (Character c) {
 	this.c = c;
-	 fireballSpawn = new Timer(2000, this);
+	 fireballSpawn = new Timer(1000, this);
 	 fireballSpawn.start();
 	 tokenSpawn = new Timer(5000, this);
 	 tokenSpawn.start();
