@@ -38,10 +38,14 @@ public class Character extends Game_Object {
     public void move() {
     	super.update();
     if (isRight) {
-    	x+=speed;
+    	if (x!=1210) {
+        	x+=speed;
+    	}
     }
     if (isLeft) {
-    	x-=speed;
+    	if (x!=0) {
+        	x-=speed;
+    	}
     }
     if (isDashingReady && isRight) {
     	isRight = false;
